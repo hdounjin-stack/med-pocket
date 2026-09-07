@@ -1,0 +1,1210 @@
+/* ==========================================================================
+   MedPocket — Components
+   ========================================================================== */
+
+/* ---------- icon button ---------- */
+.icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-solid);
+  color: var(--text-primary);
+  transition: transform var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-base) ease, border-color var(--dur-base) ease;
+}
+.icon-btn:active { transform: scale(0.90); }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--accent);
+  font-size: 14.5px;
+  font-weight: 650;
+  transition: opacity var(--dur-fast) ease, transform var(--dur-fast) var(--ease-standard);
+}
+.back-btn:active { opacity: 0.55; transform: translateX(-2px); }
+
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  width: 54px; height: 32px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--track);
+  position: relative;
+  padding: 3px;
+  transition: background-color var(--dur-slow) ease, border-color var(--dur-slow) ease;
+  flex-shrink: 0;
+}
+.theme-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform var(--dur-slow) var(--ease-bounce), background-color var(--dur-base) ease;
+}
+[data-theme="dark"] .theme-knob { transform: translateX(22px); }
+.theme-knob svg {
+  position: absolute; color: var(--text-primary);
+  transition: opacity 0.25s ease, transform 0.35s ease;
+}
+.theme-knob .ico-sun { opacity: 1; transform: scale(1) rotate(0deg); }
+.theme-knob .ico-moon { opacity: 0; transform: scale(.5) rotate(-40deg); }
+[data-theme="dark"] .theme-knob .ico-sun { opacity: 0; transform: scale(.5) rotate(40deg); }
+[data-theme="dark"] .theme-knob .ico-moon { opacity: 1; transform: scale(1) rotate(0deg); }
+
+/* ---------- search field / overlay ---------- */
+.search-field {
+  width: 100%;
+  display: flex; align-items: center; gap: 9px;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-base) ease, background-color var(--dur-base) ease;
+}
+.search-field:active { transform: scale(0.985); }
+.search-field .icon { color: var(--text-tertiary); flex-shrink: 0; }
+.search-placeholder { font-size: 14.5px; color: var(--text-tertiary); }
+
+.search-overlay {
+  position: fixed; inset: 0;
+  z-index: 80;
+  display: flex; justify-content: center;
+  visibility: hidden;
+  pointer-events: none;
+}
+.search-overlay.is-open { visibility: visible; pointer-events: auto; }
+
+.search-overlay-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(8, 10, 14, 0.32);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+.search-overlay.is-open .search-overlay-backdrop { opacity: 1; }
+
+.search-overlay-sheet {
+  position: relative;
+  width: 100%; max-width: 460px;
+  background: var(--bg);
+  border-radius: 0 0 28px 28px;
+  padding: 20px 20px 22px;
+  box-shadow: var(--shadow-lg);
+  max-height: 88vh;
+  overflow-y: auto;
+  transform: translateY(-14px);
+  opacity: 0;
+  transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-base) ease;
+}
+.search-overlay.is-open .search-overlay-sheet { transform: translateY(0); opacity: 1; }
+
+.search-field-open { cursor: text; }
+.search-input {
+  flex: 1; border: none; outline: none; background: none;
+  font-size: 14.5px; color: var(--text-primary);
+}
+.search-input::placeholder { color: var(--text-tertiary); }
+.search-cancel { font-size: 13.5px; font-weight: 650; color: var(--accent); flex-shrink: 0; }
+
+.search-heading {
+  margin: 22px 0 10px 2px;
+  font-size: 11.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+.search-results { display: flex; flex-direction: column; gap: 2px; }
+.search-empty {
+  padding: 30px 4px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 13.5px;
+}
+.search-result-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 4px;
+  font-size: 14px; font-weight: 550;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  width: 100%;
+  transition: opacity var(--dur-fast) ease;
+}
+.search-result-row:active { opacity: 0.55; }
+.search-result-row:last-child { border-bottom: none; }
+.search-result-icon { color: var(--text-tertiary); flex-shrink: 0; }
+.search-result-text { flex: 1; min-width: 0; }
+.search-result-title { display: block; }
+.search-result-path { display: block; font-size: 11.5px; color: var(--text-tertiary); font-weight: 500; margin-top: 1px; }
+.search-result-arrow { color: var(--text-tertiary); flex-shrink: 0; }
+
+/* ---------- cards (generic) ---------- */
+.card {
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) ease, border-color var(--dur-base) ease,
+    background-color var(--dur-base) ease;
+}
+.card-press:active { transform: scale(0.97); }
+
+/* ---------- progress card ---------- */
+.progress-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  padding: 20px 20px 6px;
+  margin: 14px 0 20px;
+  background: linear-gradient(165deg, var(--accent-soft), var(--surface-solid) 55%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  transition: background-color var(--dur-slow) ease, border-color var(--dur-slow) ease;
+}
+.ecg { position: absolute; bottom: -4px; left: 0; width: 100%; height: 40px; opacity: .35; pointer-events: none; }
+.ecg-path {
+  stroke: var(--accent); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 620; stroke-dashoffset: 620;
+  animation: ecgDraw 3.6s ease-in-out infinite;
+}
+@keyframes ecgDraw {
+  0% { stroke-dashoffset: 620; opacity: 0; }
+  8% { opacity: 1; }
+  55% { stroke-dashoffset: 0; opacity: 1; }
+  80% { opacity: 0; }
+  100% { stroke-dashoffset: -620; opacity: 0; }
+}
+.progress-top { display: flex; align-items: flex-start; justify-content: space-between; position: relative; z-index: 2; }
+.progress-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.progress-value-row { display: flex; align-items: baseline; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
+.progress-value { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.streak-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11.5px; font-weight: 700; color: #D9860E;
+  background: rgba(255, 166, 43, 0.15);
+  padding: 4px 9px 4px 7px; border-radius: var(--radius-pill);
+}
+.streak-flame { color: #FF8A00; }
+
+.progress-stats {
+  position: relative; z-index: 2;
+  display: flex; align-items: center;
+  margin-top: 16px; padding: 14px 0 16px;
+  border-top: 1px solid var(--border);
+}
+.progress-stats > div { flex: 1; text-align: center; }
+.stat-divider { flex: 0 0 1px !important; width: 1px; align-self: stretch; background: var(--border); }
+.stat-num { font-size: 17px; font-weight: 750; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.stat-label { margin-top: 2px; font-size: 11px; color: var(--text-tertiary); font-weight: 600; }
+
+/* ---------- radial ring + bar ---------- */
+.radial-track { stroke: var(--track); }
+.radial-fill { stroke: var(--accent); transition: stroke-dashoffset 1s var(--ease-spring); }
+
+.bar-track {
+  width: 100%; height: 8px; border-radius: var(--radius-pill);
+  background: var(--track); overflow: hidden; position: relative;
+}
+.bar-fill { height: 100%; border-radius: var(--radius-pill); transition: width 1s var(--ease-spring); }
+
+/* ---------- hues ---------- */
+.hue-teal { background: var(--hue-teal-bg); color: var(--hue-teal-fg); }
+.hue-coral { background: var(--hue-coral-bg); color: var(--hue-coral-fg); }
+.hue-violet { background: var(--hue-violet-bg); color: var(--hue-violet-fg); }
+.hue-rose { background: var(--hue-rose-bg); color: var(--hue-rose-fg); }
+.hue-indigo { background: var(--hue-indigo-bg); color: var(--hue-indigo-fg); }
+.hue-amber { background: var(--hue-amber-bg); color: var(--hue-amber-fg); }
+
+.bar-fill.hue-teal { background: var(--hue-teal-fg); }
+.bar-fill.hue-coral { background: var(--hue-coral-fg); }
+.bar-fill.hue-violet { background: var(--hue-violet-fg); }
+.bar-fill.hue-rose { background: var(--hue-rose-fg); }
+.bar-fill.hue-indigo { background: var(--hue-indigo-fg); }
+.bar-fill.hue-amber { background: var(--hue-amber-fg); }
+
+/* ---------- section title ---------- */
+.section-title-row { display: flex; align-items: center; justify-content: space-between; margin: 22px 2px 12px; }
+.section-title { font-size: 19px; font-weight: 750; letter-spacing: -0.01em; color: var(--text-primary); }
+.section-action { font-size: 13.5px; font-weight: 650; color: var(--accent); padding: 4px; transition: opacity var(--dur-fast) ease; }
+.section-action:active { opacity: 0.55; }
+
+/* ---------- category grid + card ---------- */
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.cat-card {
+  position: relative; text-align: left;
+  border-radius: 22px; padding: 15px 14px 13px;
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; font-family: inherit; width: 100%;
+}
+.cat-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.cat-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.cat-body { min-height: 44px; }
+.cat-title { font-size: 14.5px; font-weight: 700; color: var(--text-primary); line-height: 1.25; letter-spacing: -0.005em; }
+.cat-desc { margin-top: 3px; font-size: 11.5px; color: var(--text-tertiary); font-weight: 500; line-height: 1.3; }
+.cat-foot { display: flex; align-items: center; justify-content: space-between; }
+.cat-count { font-size: 13px; font-weight: 750; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.cat-count-total { font-weight: 600; color: var(--text-tertiary); }
+.cat-chevron { color: var(--text-tertiary); }
+
+/* ---------- horizontal scroll rows ---------- */
+.hscroll {
+  display: flex; gap: 12px;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scroll-snap-type: x proximity;
+}
+.hscroll::-webkit-scrollbar { display: none; }
+
+.continue-card {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+.continue-icon {
+  width: 44px; height: 44px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.continue-body { flex: 1; min-width: 0; }
+.continue-eyebrow { font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .05em; }
+.continue-title { font-size: 15px; font-weight: 720; color: var(--text-primary); margin-top: 2px; }
+.continue-progress-text { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+.continue-chevron { color: var(--accent); flex-shrink: 0; }
+
+.recent-card {
+  flex: 0 0 auto;
+  width: 148px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  scroll-snap-align: start;
+  text-align: left;
+}
+.recent-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.recent-title { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.recent-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 6px; font-weight: 600; }
+
+/* ---------- lesson card / list row ---------- */
+.lesson-list { display: flex; flex-direction: column; gap: 10px; }
+.lesson-card {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 14px;
+  border-radius: var(--radius-md);
+  text-align: left;
+  opacity: 0;
+}
+.lesson-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.lesson-body { flex: 1; min-width: 0; }
+.lesson-title { font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
+.lesson-meta-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+.lesson-resource-count { font-size: 11.5px; color: var(--text-tertiary); font-weight: 600; }
+.lesson-chevron { color: var(--text-tertiary); flex-shrink: 0; }
+
+/* ---------- row-level mark-as-complete (Library/Manage lesson rows) ----------
+   Circular tap target on the card's leading edge, mirroring the Lesson
+   screen's complete-btn colors: accent-soft when pending, filled accent
+   with a pop animation when done. The row itself stays a normal div so
+   this button and the "open lesson" button never nest. */
+.lesson-card-with-toggle { gap: 10px; }
+.row-complete-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border: 1px solid var(--border);
+  align-self: center;
+  transition: background-color var(--dur-base) ease, color var(--dur-base) ease,
+    border-color var(--dur-base) ease, transform var(--dur-fast) var(--ease-standard);
+}
+.row-complete-btn:active { transform: scale(0.9); }
+.row-complete-btn.is-done {
+  background: var(--accent); color: #ffffff; border-color: transparent;
+}
+.row-complete-btn .complete-icon { display: flex; }
+.row-complete-btn.is-done .complete-icon { animation: completePop var(--dur-slow) var(--ease-bounce); }
+.lesson-card-main {
+  display: flex; align-items: center; gap: 12px;
+  flex: 1; min-width: 0; text-align: left;
+}
+
+/* ---------- status badge ---------- */
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: var(--radius-pill); white-space: nowrap; }
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+.badge-done { background: var(--status-done-bg); color: var(--status-done-fg); }
+.badge-done .badge-dot { background: var(--status-done-fg); }
+.badge-progress { background: var(--status-progress-bg); color: var(--status-progress-fg); }
+.badge-progress .badge-dot { background: var(--status-progress-fg); }
+.badge-todo { background: var(--status-todo-bg); color: var(--status-todo-fg); }
+.badge-todo .badge-dot { background: var(--status-todo-fg); }
+
+/* ---------- breadcrumb ---------- */
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 650; color: var(--text-tertiary); flex-wrap: wrap; }
+.breadcrumb span { color: var(--text-secondary); }
+.breadcrumb .crumb-sep { color: var(--text-tertiary); opacity: .6; }
+
+/* ---------- page header (sub-pages) ----------
+   Sticky like .app-header, but iOS-large-title styled: at REST it is
+   transparent and borderless (no stray grey band sitting mid-screen on
+   short pages); the moment the list scrolls up to it, .is-pinned (set by
+   js/router.js's scroll watcher) condenses it — subtitle/breadcrumb
+   collapse, title shrinks — and fades in a solid background + hairline
+   so it reads as a proper pinned navigation bar, never a layout glitch.
+   Negative margins cancel #page-container's 20px side padding so the
+   pinned band spans edge-to-edge exactly like .app-header does.
+   z-index above .app-header's (20): on pages that render BOTH (Library
+   root, Calculators), this band slides over the home header and wins
+   the top:0 pin instead of the two fighting at the same layer.
+   Two stickies sharing top:0 used to collide (lower half peeking out).
+   FINAL ARCHITECTURE — "title wall first": the page header is the FIRST
+   element in the scroll flow (pages render it before the home header's
+   greeting row), sticky at top:0 with an OPAQUE surface. The home
+   header drops to plain static flow BELOW it, so it simply scrolls
+   underneath the wall and is painted over — there is no transition
+   phase in which the greeting sits above or behind the title, and the
+   entire top region (status-bar tint → hairline) reads as one closed,
+   professional surface at every scroll offset.
+   NOTE: do NOT make .page a flex container here — position:sticky is
+   ignored for children of a plain flex COLUMN box in this layout and
+   the wall stops pinning (regression found by mp-wall.js probing).
+   (:has is supported on iOS Safari 15.4+.) */
+.page:has(.page-header) {
+  /* header pages manage their own top inset: the wall must be able to
+     sit at y=0 when pinned, so the generic 18px page inset is removed */
+  padding-top: 0;
+}
+.page:has(.page-header) .app-header {
+  position: static;
+  background: var(--bg);
+  border-bottom-color: transparent;
+  box-shadow: none;
+  padding-top: 14px;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.page-header {
+  /* SOLID WALL FROM FRAME ONE. The user's requirement: nothing may ever
+     show through the top region while scrolling — no half-scrolled text
+     passing above/behind the title, ever. So instead of "transparent at
+     rest → solid when pinned" (which exposed content in the transition
+     zone), the header is ALWAYS a solid --bg surface pinned at the very
+     top of the scroll viewport from t=0.
+     - margin/padding trick: #page-container has 18px top + 20px side
+       padding; negative margins cancel them so the wall spans the full
+       container width and reaches y=0 with zero dead space above it.
+     - The home header (.app-header) on these pages is plain flow content
+       BELOW the wall (see the :has rule) — it scrolls under the wall and
+       is clipped by it, so the greeting row can never appear above the
+       title bar mid-scroll.
+     - Content clipping: .page gets overflow:hidden clip at its top edge;
+       combined with the wall's solid background this guarantees the
+       "nothing visible behind the header" behavior on every page. */
+  position: sticky; top: 0; z-index: 30;
+  background: var(--bg);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  margin: 0 -20px; padding: 14px 20px 8px;
+  transition:
+    border-color var(--dur-base) var(--ease-standard),
+    box-shadow var(--dur-base) var(--ease-standard),
+    padding var(--dur-base) var(--ease-standard);
+}
+/* Pinned state: only a hairline + soft shadow tighten up as content
+   passes underneath; the surface itself was already solid from frame one,
+   so there is NO visual jump when scrolling starts. */
+.page-header.is-pinned {
+  border-bottom-color: var(--border);
+  box-shadow: var(--shadow-sm);
+  padding-top: 10px;
+  padding-bottom: 6px;
+}
+/* Collapsible secondary rows (subtitle / breadcrumb): smoothly fold away
+   when the header condenses. max-height animates from a generous bound
+   to 0 — cheap and smooth for these one/two-line rows. */
+.page-header .page-subtitle,
+.page-header .breadcrumb {
+  max-height: 52px;
+  overflow: hidden;
+  transition:
+    max-height var(--dur-base) var(--ease-standard),
+    opacity var(--dur-fast) linear,
+    margin-top var(--dur-base) var(--ease-standard);
+}
+.page-header .page-title { transition: font-size var(--dur-base) var(--ease-standard); }
+
+.page-header.is-pinned .page-subtitle,
+.page-header.is-pinned .breadcrumb {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+.page-header.is-pinned .page-title { font-size: 19px; }
+.page-header-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; }
+.page-title { font-size: 25px; font-weight: 800; letter-spacing: -0.015em; color: var(--text-primary); margin-top: 2px; }
+.page-subtitle { font-size: 13.5px; color: var(--text-tertiary); font-weight: 500; margin-top: 4px; line-height: 1.4; }
+
+/* ---------- progress summary (Section / Subsection pages) ---------- */
+.section-progress {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; border-radius: var(--radius-lg);
+  margin: 4px 0 20px;
+}
+.section-progress-body { flex: 1; min-width: 0; }
+.section-progress-label { font-size: 12px; font-weight: 650; color: var(--text-secondary); }
+.section-progress-value { font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 2px 0 8px; }
+
+/* ---------- mark-as-complete button (Lesson screen) ---------- */
+.complete-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 15px; font-weight: 750;
+  background: var(--accent-soft); color: var(--accent-strong);
+  border: 1px solid var(--border);
+  margin: 2px 0 18px;
+  transition: background-color var(--dur-base) ease, color var(--dur-base) ease,
+    border-color var(--dur-base) ease, transform var(--dur-fast) var(--ease-standard);
+}
+.complete-btn:active { transform: scale(0.97); }
+.complete-btn.is-done {
+  background: var(--accent); color: #ffffff; border-color: transparent;
+}
+.complete-btn .complete-icon { display: flex; }
+.complete-btn.is-done .complete-icon { animation: completePop var(--dur-slow) var(--ease-bounce); }
+@keyframes completePop {
+  from { transform: scale(0.6); }
+  to { transform: scale(1); }
+}
+
+/* ---------- management (Phase 4): stats card + action row ---------- */
+.manage-stats-card {
+  display: flex; align-items: center;
+  padding: 16px; border-radius: var(--radius-lg);
+  margin: 4px 0 20px;
+}
+.manage-stats-card > div { flex: 1; text-align: center; }
+
+.manage-actions { display: flex; gap: 8px; margin-top: 2px; }
+.manage-action-btn {
+  flex: 1; padding: 9px 0;
+  border-radius: var(--radius-sm);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  font-size: 12.5px; font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-base) ease,
+    color var(--dur-base) ease, border-color var(--dur-base) ease;
+}
+.manage-action-btn:active { transform: scale(0.94); }
+.manage-action-btn.manage-action-primary { background: var(--accent-soft); color: var(--accent-strong); border-color: transparent; }
+.manage-action-btn.manage-action-danger { background: rgba(225, 74, 120, 0.12); color: #E14A78; border-color: transparent; }
+
+.manage-add-btn {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  width: 100%; padding: 13px;
+  border-radius: var(--radius-md);
+  background: var(--accent-soft); color: var(--accent-strong);
+  font-size: 14px; font-weight: 700;
+  margin: 4px 0 4px;
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-base) ease;
+}
+.manage-add-btn:active { transform: scale(0.97); }
+
+/* ---------- sheet (bottom sheet: edit forms + confirm dialogs) ----------
+   Deliberately mirrors .search-overlay's tokens/timing/backdrop so it reads
+   as the same design language rather than a new one. */
+.sheet-overlay {
+  position: fixed; inset: 0; z-index: 85;
+  display: flex; align-items: flex-end; justify-content: center;
+  visibility: hidden; pointer-events: none;
+}
+.sheet-overlay.is-open { visibility: visible; pointer-events: auto; }
+.sheet-overlay-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(8, 10, 14, 0.32);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+.sheet-overlay.is-open .sheet-overlay-backdrop { opacity: 1; }
+.sheet-panel {
+  position: relative;
+  width: 100%; max-width: 460px;
+  background: var(--bg);
+  border-radius: 28px 28px 0 0;
+  padding: 14px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+  box-shadow: var(--shadow-lg);
+  max-height: 86vh;
+  overflow-y: auto;
+  transform: translateY(28px) scale(0.98);
+  opacity: 0;
+  transition: transform 260ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease;
+}
+.sheet-overlay.is-open .sheet-panel { transform: translateY(0) scale(1); opacity: 1; }
+.sheet-handle { width: 36px; height: 4px; border-radius: var(--radius-pill); background: var(--border-strong); margin: 0 auto 14px; }
+.sheet-title { font-size: 18px; font-weight: 750; color: var(--text-primary); }
+.sheet-heading-inline { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); margin-top: 18px; }
+.sheet-message { font-size: 13.5px; color: var(--text-secondary); margin-top: 6px; line-height: 1.5; }
+.sheet-field { margin-top: 14px; }
+.sheet-label { display: block; font-size: 12px; font-weight: 650; color: var(--text-secondary); margin-bottom: 6px; }
+.sheet-input, .sheet-textarea {
+  width: 100%; padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  font-size: 14.5px; color: var(--text-primary);
+  font-family: inherit;
+  transition: border-color var(--dur-base) ease;
+}
+.sheet-input:focus, .sheet-textarea:focus { outline: none; border-color: var(--accent); }
+.sheet-textarea { resize: vertical; min-height: 70px; }
+.sheet-error { font-size: 12px; color: #E14A78; margin-top: 6px; min-height: 14px; }
+.sheet-empty { font-size: 13px; color: var(--text-tertiary); padding: 10px 2px; }
+
+/* ---------- resource rows (Links / PDFs), added dynamically ---------- */
+.resource-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 0;
+  margin-top: 8px;
+}
+.resource-row:first-child { margin-top: 0; }
+.resource-row .sheet-input { flex: 1; }
+.resource-row-icon { font-size: 15px; flex-shrink: 0; }
+.resource-row-text {
+  flex: 1; font-size: 14px; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.row-delete-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: rgba(225, 74, 120, 0.1);
+  color: #E14A78;
+  font-size: 15px;
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-base) ease;
+}
+.row-delete-btn:active { transform: scale(0.90); }
+
+.sheet-add-row-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 11px;
+  margin-top: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft); color: var(--accent-strong);
+  font-size: 13.5px; font-weight: 700;
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-base) ease;
+}
+.sheet-add-row-btn:active { transform: scale(0.97); }
+
+/* ---------- resource summary (Manage Lesson screen) ---------- */
+.sheet-inline-edit-btn {
+  font-size: 13px; font-weight: 650; color: var(--accent);
+  margin-top: 4px;
+  transition: opacity var(--dur-fast) ease;
+}
+.sheet-inline-edit-btn:active { opacity: 0.55; }
+
+.resource-summary-list {
+  display: flex; flex-direction: column;
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.resource-summary-row {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 13px 14px;
+  font-size: 14px; font-weight: 600; color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  transition: background-color var(--dur-fast) ease;
+}
+.resource-summary-row:last-child { border-bottom: none; }
+.resource-summary-row:active { background-color: var(--accent-soft); }
+.resource-summary-count { font-size: 13px; font-weight: 700; color: var(--text-tertiary); }
+
+/* ---------- lesson resource list (Lesson screen: unified "+ Add Resource") ---------- */
+.lesson-resource-block { margin-top: 18px; }
+.lesson-resource-list {
+  display: flex; flex-direction: column;
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.lesson-resource-row { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+.lesson-resource-row:last-child { border-bottom: none; }
+.lesson-resource-open {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px;
+  padding: 13px 12px;
+  font-size: 14px; font-weight: 600; color: var(--text-primary);
+  text-align: left;
+  transition: background-color var(--dur-fast) ease;
+}
+.lesson-resource-open:active { background-color: var(--accent-soft); }
+.lesson-resource-icon { font-size: 15px; flex-shrink: 0; }
+.lesson-resource-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lesson-resource-row .row-delete-btn { width: 30px; height: 30px; margin-right: 8px; flex-shrink: 0; }
+
+/* ---------- link viewer (Phase: Link Viewer) ---------- */
+.viewer-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px calc(12px + env(safe-area-inset-top, 0px)) 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.viewer-title {
+  flex: 1; text-align: center;
+  font-size: 13.5px; font-weight: 700; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.viewer-open-external {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12.5px; font-weight: 700; color: var(--accent);
+  flex-shrink: 0; white-space: nowrap;
+  transition: opacity var(--dur-fast) ease;
+}
+.viewer-open-external:active { opacity: 0.55; }
+
+.viewer-frame-wrap {
+  position: relative;
+  height: calc(100dvh - 190px);
+  min-height: 320px;
+  background: var(--bg-elevated);
+}
+.viewer-iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+.viewer-loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--bg);
+}
+
+/* ---------- PDF reader ---------- */
+.pdf-topbar-icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 16px; font-weight: 700;
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-base) ease;
+}
+.pdf-topbar-icon-btn:active { transform: scale(0.9); background-color: var(--accent-soft); }
+
+.pdf-search-bar {
+  display: none; align-items: center; gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.pdf-search-bar.is-open { display: flex; }
+.pdf-search-count { font-size: 11.5px; font-weight: 700; color: var(--text-tertiary); flex-shrink: 0; white-space: nowrap; }
+
+.pdf-loading {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 20px;
+}
+
+.pdf-scroll {
+  height: calc(100dvh - 190px);
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px 140px;
+  /* Deliberately NOT including "pinch-zoom" here: native browser pinch
+     handling must stay OUT of this so it can never compete with our own
+     JS-driven pinch (see wirePinchZoom in pages/pdfReader.js), which
+     explicitly preventDefault()s two-finger touchmove events. One-finger
+     pan (normal scrolling) is untouched/native and stays smooth. */
+  touch-action: pan-x pan-y;
+}
+.pdf-scroll-inner {
+  transform-origin: 0 0;
+}
+.pdf-page-slot {
+  position: relative;
+  min-width: 100%;
+  width: max-content;
+  margin: 0 auto 10px;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+/* No max-width here on purpose: at zoom levels beyond the initial
+   fit-to-width scale the canvas (and its matching .textLayer, sized
+   identically via --total-scale-factor) is genuinely wider than the
+   viewport and pans horizontally in .pdf-scroll above, exactly like
+   Apple Books/Preview's pinch-zoom — clamping display width here while
+   leaving the explicit pixel height unclamped would stretch/distort the
+   page and break text-layer-to-glyph alignment. */
+.pdf-page-canvas { display: block; }
+
+/* ---------- PDF.js real text layer (selection/copy/search over the canvas) ----------
+   Mirrors PDF.js's own (unvendored) web/text_layer_builder.css: transparent
+   text spans positioned exactly over the rendered glyphs. --scale-round-x/y
+   and --total-scale-factor are read by pdf.js's own internal layout calc()/
+   round() — see js/pdf/engine.js renderTextLayer(). */
+:root {
+  --scale-round-x: 1px;
+  --scale-round-y: 1px;
+}
+.textLayer {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  text-align: initial;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  z-index: 1;
+  /* Explicit (not just relying on the "auto" default) so iOS Safari
+     never inherits a stricter value from an ancestor and so long-press
+     selection is reliably recognized on these absolutely-positioned
+     spans. touch-action is intentionally left at its default here —
+     restricting it does nothing for selection (that's user-select's
+     job) but CAN make iOS's long-press-vs-scroll gesture heuristic
+     less reliable. */
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+.textLayer :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* Ties PDF.js's own per-span --font-height/--scale-x/--rotate custom
+   properties (set in js/pdf/engine.js via the vendored TextLayer class)
+   to actual CSS sizing — this is normally supplied by pdf.js's own
+   (un-vendored here) web/text_layer_builder.css. Without it spans fall
+   back to the browser default font-size and are invisible-but-wrong-
+   sized, which silently breaks selection-to-glyph alignment. */
+.textLayer span {
+  font-size: calc(var(--font-height) * var(--total-scale-factor));
+  transform: rotate(var(--rotate, 0deg)) scaleX(var(--scale-x, 1));
+}
+.textLayer span.markedContent { top: 0; height: 0; }
+.textLayer ::selection { background: rgba(45, 156, 219, 0.35); }
+.textLayer br::selection { background: transparent; }
+
+/* ---------- PDF annotations (js/pdf/annotations.js + pages/pdfReader.js) ----------
+   Highlight colors as tokens (theme-aware); overlays are fraction-positioned
+   divs INSIDE the page div, pointer-transparent so selection/search/pinch
+   behavior is untouched. Note pins are small tappable circles. */
+.mp-hl-overlay {
+  position: absolute;
+  mix-blend-mode: multiply;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 2;
+}
+.mp-note-pin {
+  position: absolute; top: 8px; right: 8px;
+  width: 26px; height: 26px; border-radius: 50%;
+  border: none; background: var(--accent);
+  color: #fff; font-size: 14px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-sm);
+  z-index: 3;
+}
+[data-theme="dark"] .mp-hl-overlay { mix-blend-mode: normal; opacity: 0.45; }
+
+/* selection popup */
+.pdf-sel-popup {
+  position: absolute; z-index: 40;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 7px 10px;
+  box-shadow: var(--shadow-md);
+}
+.pdf-sel-colors { display: flex; align-items: center; gap: 8px; }
+.pdf-sel-color {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid transparent; padding: 0;
+}
+.pdf-sel-color.is-yellow { background: #FFE066; }
+.pdf-sel-color.is-green { background: #8FD694; }
+.pdf-sel-color.is-pink { background: #F49AC1; }
+.pdf-sel-color:active { transform: scale(0.88); }
+.pdf-sel-divider { width: 1px; height: 18px; background: var(--border); }
+.pdf-sel-act {
+  border: none; background: none;
+  font-size: 13px; font-weight: 700; color: var(--text-primary);
+  padding: 4px 2px;
+}
+/* bookmark button active state */
+.pdf-topbar-icon-btn.is-bookmarked { color: var(--accent); }
+.pdf-topbar-icon-btn.is-bookmarked svg { fill: var(--accent-soft); }
+/* marks list sheet rows */
+.pdf-marks-list { display: flex; flex-direction: column; max-height: 46vh; overflow-y: auto; }
+.pdf-marks-row {
+  text-align: left; border: none; background: none;
+  padding: 11px 4px; font-size: 13.5px; font-weight: 600; color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+}
+.sheet-note-quote {
+  font-size: 12.5px; color: var(--text-tertiary);
+  border-left: 3px solid var(--border); padding-left: 10px;
+  margin-bottom: 12px; line-height: 1.5;
+}
+.textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: -1;
+  cursor: default;
+  user-select: none;
+}
+.textLayer .endOfContent.active { top: 0; }
+
+/* ---------- Official PDF.js viewer (PDFViewer) shell — pages/pdfReader.js ----------
+   Structural rules adapted from PDF.js's own web/pdf_viewer.css (not
+   invented), scoped under .pdfjsv-container so its required-but-generic
+   class names (.pdfViewer, .page, .canvasWrapper) can never collide with
+   MedPocket's own top-level `.page` shell class used everywhere else in
+   the app. The .textLayer rules above are already generic/shared — the
+   same PDF.js core TextLayer class populates them here too. */
+#hiddenCopyElement,
+.hiddenCanvasElement {
+  position: absolute; top: 0; left: 0; width: 0; height: 0; display: none;
+}
+.pdfjsv-shell {
+  position: relative;
+  height: calc(100dvh - 190px);
+}
+.pdfjsv-container {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px 140px;
+  background: transparent;
+  /* This is the PDF reader's own scroll container, so it is the element
+     where the browser resolves touch-action for touches on the PDF pages
+     (app-wide panning-only lives on #page-container, further up). Leaving
+     it at its DEFAULT here deliberately re-enables every native gesture —
+     including pinch-zoom — for the PDF subtree only. */
+}
+.pdfjsv-container .pdfViewer {
+  --scale-factor: 1;
+  position: relative;
+}
+.pdfjsv-container .pdfViewer .page {
+  /* MedPocket's own top-level page-transition rule (styles/animations.css)
+     targets `.page` unconditionally by class name — harmless in practice
+     since these divs never get a data-anim attribute so no animation-name
+     applies, but explicitly neutralized anyway so PDF.js's own per-page
+     divs can never inherit any animation/transform machinery, matching
+     the same iOS-selection-safety reasoning as js/router.js's
+     animationend detach for MedPocket's own top-level .page element. */
+  animation: none;
+  --user-unit: 1;
+  --total-scale-factor: calc(var(--scale-factor) * var(--user-unit));
+  --scale-round-x: 1px;
+  --scale-round-y: 1px;
+  direction: ltr;
+  position: relative;
+  margin: 0 auto 10px;
+  overflow: hidden;
+  background-color: #fff; /* the PDF page itself always stays a normal white/readable page, never inverted for dark mode */
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.pdfjsv-container .pdfViewer .canvasWrapper {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+.pdfjsv-container .pdfViewer .canvasWrapper canvas {
+  position: absolute; top: 0; left: 0; margin: 0; display: block;
+  width: 100%; height: 100%;
+}
+
+.pdf-bottom-bar {
+  position: fixed;
+  left: 50%; bottom: 104px;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  z-index: 40;
+}
+.pdf-page-indicator {
+  padding: 0 12px;
+  font-size: 12.5px; font-weight: 700; color: var(--text-primary);
+  white-space: nowrap;
+}
+.sheet-actions { display: flex; gap: 10px; margin-top: 20px; }
+.sheet-btn {
+  flex: 1; padding: 13px; border-radius: var(--radius-md);
+  font-size: 14.5px; font-weight: 700; text-align: center;
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-base) ease;
+}
+.sheet-btn:active { transform: scale(0.97); }
+.sheet-btn-cancel { background: var(--surface-solid); border: 1px solid var(--border); color: var(--text-secondary); }
+.sheet-btn-primary { background: var(--accent); color: #ffffff; }
+.sheet-btn-danger { background: #E14A78; color: #ffffff; }
+
+/* ---------- quick reference rows (pages/reference.js) ----------
+   Compact two-line lab-value rows inside the same calc-cat accordion.
+   Reuses existing tokens only. */
+.ref-row { padding: 11px 14px; }
+.ref-row + .ref-row { border-top: 1px solid var(--border); }
+.ref-row-main { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.ref-abbr {
+  font-size: 12px; font-weight: 800; color: var(--accent-strong);
+  background: var(--accent-soft); border-radius: 7px; padding: 2px 7px;
+  flex-shrink: 0;
+}
+.ref-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); min-width: 0; }
+.ref-range { font-size: 12.5px; font-weight: 650; color: var(--text-secondary); margin-top: 5px; }
+.ref-si { color: var(--text-tertiary); font-weight: 500; }
+.ref-note { font-size: 11.5px; color: var(--text-tertiary); margin-top: 3px; line-height: 1.45; }
+.ref-disclaimer { font-size: 11.5px; color: var(--text-tertiary); margin-top: 16px; line-height: 1.5; }
+
+/* ---------- More screen: simple settings-style row ---------- */
+.settings-row {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 14px;
+  border-radius: var(--radius-md);
+  text-align: left;
+}
+.settings-row-icon { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.settings-row-title { flex: 1; font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
+.settings-row-chevron { color: var(--text-tertiary); flex-shrink: 0; }
+
+/* ---------- calculator category accordion (Phase 8) ---------- */
+.calc-cat { padding: 0; overflow: hidden; }
+.calc-cat + .calc-cat { margin-top: 10px; }
+.calc-cat-head {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 13px 14px;
+}
+.calc-cat-icon { width: 30px; height: 30px; border-radius: 10px; flex-shrink: 0; }
+.calc-cat-title { flex: 1; text-align: left; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.calc-cat-chevron { color: var(--text-tertiary); flex-shrink: 0; transition: transform var(--dur-base) var(--ease-spring); }
+.calc-cat.is-open .calc-cat-chevron { transform: rotate(90deg); }
+
+.calc-cat-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-spring);
+}
+.calc-cat.is-open .calc-cat-body { grid-template-rows: 1fr; }
+.calc-cat-body-inner {
+  overflow: hidden;
+  min-height: 0;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  border-top: 1px solid var(--border);
+}
+.calc-cat.is-open .calc-cat-body-inner { opacity: 1; transition-delay: 60ms; }
+
+.calc-row {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  transition: background-color var(--dur-fast) ease;
+}
+.calc-row:last-child { border-bottom: none; }
+.calc-row:active { background-color: var(--accent-soft); }
+.calc-row-title { font-size: 13.5px; font-weight: 650; color: var(--text-primary); }
+.calc-row-desc { flex: 1; font-size: 11.5px; color: var(--text-tertiary); text-align: right; margin-right: 4px; }
+.calc-row-chevron { color: var(--text-tertiary); flex-shrink: 0; }
+
+/* ---------- calculators (Phase 7) ---------- */
+.calc-search-field { margin-top: 4px; }
+
+.field-group { margin-top: 16px; }
+.field-group:first-child { margin-top: 4px; }
+.field-label {
+  display: block; font-size: 12.5px; font-weight: 650;
+  color: var(--text-secondary); margin-bottom: 6px;
+}
+.field-input-row { display: flex; align-items: stretch; gap: 8px; }
+.calc-input, .calc-select {
+  padding: 12px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  font-size: 15px; color: var(--text-primary);
+  font-family: inherit;
+  transition: border-color var(--dur-base) ease;
+}
+.calc-input { flex: 1; min-width: 0; }
+.calc-select { appearance: none; -webkit-appearance: none; background-image: none; }
+.calc-unit-select { flex: 0 0 auto; width: 96px; }
+.calc-unit-static {
+  display: flex; align-items: center;
+  padding: 0 4px; font-size: 13px; font-weight: 650; color: var(--text-tertiary);
+  flex-shrink: 0; white-space: nowrap;
+}
+.calc-input:focus, .calc-select:focus { outline: none; border-color: var(--accent); }
+.calc-input.is-invalid, .calc-select.is-invalid { border-color: #E14A78; }
+.field-error { font-size: 11.5px; color: #E14A78; margin-top: 5px; min-height: 14px; }
+
+.calc-btn-row { display: flex; gap: 10px; margin-top: 24px; }
+
+.calc-result-card { padding: 18px; border-radius: var(--radius-lg); margin-top: 22px; opacity: 0; }
+.calc-result-value { margin-top: 2px; font-size: 32px; }
+.calc-result-unit { margin-top: 2px; }
+.calc-interpretation { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.calc-components { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+.calc-component-row { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--text-secondary); padding: 3px 0; }
+.calc-component-row span:last-child { font-weight: 700; color: var(--text-primary); }
+.calc-formula-note {
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
+  font-size: 11px; line-height: 1.5; color: var(--text-tertiary);
+}
+
+/* ---------- lesson detail cards ---------- */
+.lesson-hero { padding: 4px 2px 18px; }
+.lesson-hero-title { font-size: 26px; font-weight: 800; letter-spacing: -0.015em; color: var(--text-primary); margin-top: 6px; }
+
+.resource-grid { display: flex; flex-direction: column; gap: 12px; }
+.resource-card { border-radius: var(--radius-lg); padding: 16px; opacity: 0; cursor: pointer; }
+.resource-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.resource-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.resource-label { font-size: 12.5px; font-weight: 750; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; }
+.resource-item-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.resource-item-name { font-size: 14.5px; font-weight: 650; color: var(--text-primary); }
+.resource-open { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: var(--accent); flex-shrink: 0; transition: opacity var(--dur-fast) ease; }
+.resource-open:active { opacity: .55; }
+.resource-note { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+
+/* ---------- placeholder page ---------- */
+.placeholder-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 90px 20px 40px; gap: 14px; }
+.placeholder-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; }
+.placeholder-title { font-size: 18px; font-weight: 750; color: var(--text-primary); }
+.placeholder-text { font-size: 13.5px; color: var(--text-tertiary); max-width: 260px; line-height: 1.5; }
+
+/* ---------- skeletons ---------- */
+.skeleton {
+  background: linear-gradient(100deg, var(--skeleton-base) 30%, var(--skeleton-sheen) 50%, var(--skeleton-base) 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer { 0% { background-position: 140% 0; } 100% { background-position: -40% 0; } }
+.sk-icon { width: 38px; height: 38px; border-radius: 12px; }
+.sk-ring { width: 36px; height: 36px; border-radius: 50%; margin-left: auto; margin-top: -38px; }
+.sk-line { height: 13px; border-radius: 6px; }
+.sk-bar { height: 8px; border-radius: var(--radius-pill); margin-top: 4px; }
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 112px;
+  transform: translateX(-50%) translateY(10px);
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 16px; border-radius: var(--radius-pill);
+  background: #101317; color: white;
+  font-size: 12.5px; font-weight: 650;
+  box-shadow: var(--shadow-lg);
+  z-index: 90; white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-base) ease, transform var(--dur-base) var(--ease-spring);
+}
+.toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.toast-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ---------- bottom nav ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 420px;
+  height: 64px;
+  border-radius: 24px;
+  background: var(--surface);
+  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  z-index: 70;
+  transition: background-color var(--dur-slow) ease, border-color var(--dur-slow) ease;
+}
+.nav-pill {
+  position: absolute; top: 7px; bottom: 7px; left: 0;
+  width: calc(20% - 14px);
+  border-radius: 17px;
+  background: var(--accent-soft);
+  opacity: 0;
+  transition: transform var(--dur-slow) var(--ease-spring),
+    width var(--dur-slow) var(--ease-spring),
+    opacity var(--dur-fast) ease;
+  will-change: transform;
+}
+.nav-item {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px;
+  color: var(--text-tertiary);
+  transition: color var(--dur-base) ease, transform var(--dur-fast) var(--ease-standard);
+}
+.nav-item:active { transform: scale(0.90); }
+.nav-icon { transition: transform var(--dur-base) var(--ease-bounce); }
+.nav-item.is-active { color: var(--accent); }
+.nav-item.is-active .nav-icon { transform: translateY(-1px) scale(1.05); }
+.nav-label {
+  font-size: 10px; font-weight: 700;
+  max-height: 0; opacity: 0; transform: translateY(-2px);
+  transition: max-height var(--dur-base) ease, opacity var(--dur-fast) ease, transform var(--dur-base) ease;
+  overflow: hidden;
+}
+.nav-item.is-active .nav-label { max-height: 14px; opacity: 1; transform: translateY(0); }
+
+/* ---------- header ---------- */
+.app-header {
+  padding: 10px 0 14px;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+  transition: background-color var(--dur-slow) ease, border-color var(--dur-slow) ease;
+  position: sticky; top: 0; z-index: 20;
+  margin: 0 -20px; padding-left: 20px; padding-right: 20px;
+}
+.header-row { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; }
+.header-title { flex: 1; min-width: 0; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); transition: color var(--dur-base) ease; }
+.eyebrow-switcher {
+  display: inline-flex; align-items: center; gap: 3px;
+  transition: opacity var(--dur-fast) ease;
+}
+.eyebrow-switcher:active { opacity: 0.6; }
+.icon-caret-down { color: var(--accent); transform: rotate(90deg); }
+.greeting { font-size: 21px; font-weight: 750; letter-spacing: -.01em; color: var(--text-primary); margin-top: 1px; transition: color var(--dur-slow) ease; }

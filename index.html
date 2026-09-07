@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- Status-bar tint: matches --bg in each theme so the OS bar continues
+     the app surface instead of reading as a separate dark strip. Values
+     mirror styles/tokens.css; js/main.js swaps media when theme toggles. -->
+  <meta name="theme-color" content="#F5F7F9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0A0D12" media="(prefers-color-scheme: dark)" />
+  <title>MedPocket</title>
+
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/animations.css" />
+</head>
+<body>
+  <div class="app-viewport">
+    <div class="app-shell" data-app-shell>
+      <main id="page-container" aria-live="polite"></main>
+      <!-- bottom nav, search overlay, and toast are mounted here by js/main.js -->
+    </div>
+  </div>
+
+  <!-- utilities -->
+  <script src="js/icons.js"></script>
+  <script src="js/dom.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/files.js"></script>
+  <script src="js/data/emle.js"></script>
+  <script src="js/data/reference.js"></script>
+  <script src="js/data.js"></script>
+
+  <!-- calculators (data/logic layer — loaded before components/pages that use it) -->
+  <script src="js/calculators/conversions.js"></script>
+  <script src="js/calculators/registry.js"></script>
+  <script src="js/calculators/egfr.js"></script>
+  <script src="js/calculators/gcs.js"></script>
+  <script src="js/calculators/news2.js"></script>
+  <script src="js/calculators/shockindex.js"></script>
+  <script src="js/calculators/map.js"></script>
+  <script src="js/calculators/qsofa.js"></script>
+  <script src="js/calculators/sofa.js"></script>
+  <script src="js/calculators/cardiology.js"></script>
+  <script src="js/calculators/pediatrics.js"></script>
+  <script src="js/calculators/general.js"></script>
+
+  <!-- components -->
+  <script src="components/progressPrimitives.js"></script>
+  <script src="components/header.js"></script>
+  <script src="components/searchOverlay.js"></script>
+  <script src="components/progressCard.js"></script>
+  <script src="components/categoryCard.js"></script>
+  <script src="components/lessonCard.js"></script>
+  <script src="components/resourceCard.js"></script>
+  <script src="components/bottomNav.js"></script>
+  <script src="components/toast.js"></script>
+  <script src="components/breadcrumb.js"></script>
+  <script src="components/sheet.js"></script>
+  <script src="components/managementCards.js"></script>
+  <script src="components/studySpaceSwitcher.js"></script>
+  <script src="components/calculatorCategory.js"></script>
+  <script src="components/calculatorForm.js"></script>
+  <script src="components/calculatorResult.js"></script>
+  <script src="components/linkViewer.js"></script>
+  <script src="components/pdfReaderUI.js"></script>
+  <script src="js/pdf/viewerEngine.js"></script>
+  <script src="js/pdf/annotations.js"></script>
+
+  <!-- pages -->
+  <script src="pages/home.js"></script>
+  <script src="pages/library.js"></script>
+  <script src="pages/lesson.js"></script>
+  <script src="pages/placeholder.js"></script>
+  <script src="pages/manage.js"></script>
+  <script src="pages/calculators.js"></script>
+  <script src="pages/calculator.js"></script>
+  <script src="pages/linkViewer.js"></script>
+  <script src="pages/reference.js"></script>
+  <script src="pages/pdfReader.js"></script>
+  <script src="pages/fileViewer.js"></script>
+
+  <!-- router + bootstrap -->
+  <script src="js/router.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

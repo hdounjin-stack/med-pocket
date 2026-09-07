@@ -1,0 +1,154 @@
+/* ==========================================================================
+   MedPocket — Base
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------------- iOS tap-highlight / focus reset ----------------
+   Fixes the semi-transparent black/gray flash Safari on iOS shows on
+   tap for any element that looks interactive. The intended feedback
+   is the subtle scale/opacity transitions already defined per
+   component (see components.css :active rules) — never a highlight
+   overlay. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+[role="button"],
+.card-press,
+.cat-card,
+.lesson-card,
+.continue-card,
+.recent-card,
+.resource-open,
+.search-field,
+.search-result-row,
+.nav-item,
+.icon-btn,
+.theme-toggle,
+.back-btn,
+.section-action,
+.avatar-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+button:focus,
+a:focus {
+  outline: none;
+}
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #E9ECF1;
+  color: var(--text-primary);
+  transition: background-color var(--dur-slow) ease;
+}
+
+[data-theme="dark"] body { background: #05070A; }
+
+button {
+  font-family: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+ul, ol { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+img { display: block; max-width: 100%; }
+
+/* Kill iOS double-tap-to-zoom on every interactive control (bottom nav,
+   buttons, links) — 300ms zoom-on-double-tap reads as a glitch. This
+   keeps single-finger panning intact and is scoped to controls, so it
+   never affects the PDF viewer's own gestures. */
+button, a, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+
+/* ---------------- app shell layout (no device frame) ---------------- */
+
+.app-viewport {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+}
+
+.app-shell {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--dur-slow) ease;
+  overflow: hidden;
+}
+
+#page-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* NO top padding by design: the sticky page-header wall must reach the
+     very top pixel of the scroll viewport (user requirement — nothing
+     visible above/behind the pinned title). Pages own their top spacing:
+     .page-header supplies it via its own padding; pages WITHOUT a
+     .page-header (Home) get it from .page's padding-top below. */
+  padding: 0 20px;
+  position: relative;
+  /* Contain native gestures app-wide: panning only — the browser must NOT
+     pinch-zoom the page while the user is scrolling study content (iOS
+     Safari otherwise zooms the whole UI from any two-finger touch).
+     Per the pointer-events/gesture-resolution rules the browser stops
+     accumulating touch-action at the nearest scroll container, so the
+     PDF reader's own scroller (.pdfjsv-container, see components.css)
+     opts its subtree back into FULL default gestures — native pinch
+     stays alive inside the PDF viewer only. */
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+}
+
+.bottom-spacer { height: calc(100px + env(safe-area-inset-bottom, 0px)); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

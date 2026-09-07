@@ -1,0 +1,52 @@
+/* ==========================================================================
+   MedPocket — Animations
+   ========================================================================== */
+
+.reveal {
+  opacity: 0;
+  animation: fadeInUp var(--dur-slow) var(--ease-spring) forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* page transitions: applied to the page root element rendered inside
+   #page-container. Direction is set by the router via a data attribute.
+   The 18px top inset used to live on #page-container; it moved here so
+   pages WITHOUT a sticky .page-header (Home) keep their breathing room,
+   while header pages reach y=0 with the wall (see components.css). */
+.page {
+  padding-top: 18px;
+  animation-duration: var(--dur-base);
+  animation-timing-function: var(--ease-spring);
+  animation-fill-mode: forwards;
+}
+.page[data-anim="forward"] { animation-name: pageInForward; }
+.page[data-anim="back"] { animation-name: pageInBack; }
+.page[data-anim="none"] { animation: none; }
+
+@keyframes pageInForward {
+  from { opacity: 0; transform: translateX(18px); }
+  /* Ends at "none", not "translateX(0)" — both render identically, but
+     translateX(0) is a non-none transform value that (combined with
+     animation-fill-mode: forwards holding it indefinitely after the
+     animation completes) makes .page an active CSS-transform ancestor
+     for the rest of the page's lifetime. On iOS Safari specifically,
+     any transformed ancestor can silently disable the native long-press
+     text-selection gesture on descendants (e.g. the PDF reader's
+     .textLayer) — invisible in desktop testing since it doesn't affect
+     Chromium's selection at all. */
+  to { opacity: 1; transform: none; }
+}
+@keyframes pageInBack {
+  from { opacity: 0; transform: translateX(-18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .page, .skeleton, .nav-pill, .radial-fill, .bar-fill, .theme-knob, .cat-card, .lesson-card, .resource-card {
+    animation-duration: 0.001s !important;
+    transition-duration: 0.001s !important;
+  }
+}

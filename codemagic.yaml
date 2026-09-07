@@ -1,0 +1,26 @@
+workflows:
+  build-android:
+    name: Build Med Pocket APK
+    instance_type: mac_mini_m1
+    environment:
+      node: 18
+    scripts:
+      - name: Install Dependencies
+        script: |
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+      - name: Prepare Web Assets
+        script: |
+          mkdir -p www
+          cp -r index.html assets components js pages styles www/ 2>/dev/null || true
+      - name: Setup Android Platform
+        script: |
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
+          npx cap copy android
+          npx cap sync android
+      - name: Build APK
+        script: |
+          cd android && ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/debug/*.apk

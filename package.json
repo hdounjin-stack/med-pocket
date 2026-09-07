@@ -1,0 +1,9 @@
+{
+  name med-pocket,
+  version 1.0.0,
+  dependencies {
+    @capacitorandroid ^6.0.0,
+    @capacitorcli ^6.0.0,
+    @capacitorcore ^6.0.0
+  }
+}
