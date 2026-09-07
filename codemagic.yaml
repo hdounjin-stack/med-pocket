@@ -1,6 +1,6 @@
 workflows:
   build-android:
-    name: Build Med Pocket APK
+    name: Build Android APK
     instance_type: mac_mini_m1
     environment:
       node: 18
@@ -8,15 +8,25 @@ workflows:
       - name: Install Dependencies
         script: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
-      - name: Prepare Web Assets
+      - name: Prepare Web Assets & App Icon
         script: |
           mkdir -p www
           cp -r index.html assets components js pages styles www/ 2>/dev/null || true
-      - name: Setup Android Platform
+      - name: Setup Android Platform & Icons
         script: |
           if [ ! -d android ]; then
             npx cap add android
           fi
+          
+          # نسخ الصورة كأيقونة رسمية للتطبيق في كل مقاسات Android
+          if [ -f icon-512.png ]; then
+            for dir in android/app/src/main/res/mipmap-*; do
+              cp icon-512.png "$dir/ic_launcher.png"
+              cp icon-512.png "$dir/ic_launcher_round.png"
+              cp icon-512.png "$dir/ic_launcher_foreground.png"
+            done
+          fi
+
           npx cap copy android
           npx cap sync android
       - name: Build APK
