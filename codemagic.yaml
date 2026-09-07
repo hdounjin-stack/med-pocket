@@ -8,25 +8,37 @@ workflows:
       - name: Install Dependencies
         script: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
-      - name: Prepare Web Assets & App Icon
+      - name: Prepare Web Assets & Inject Icon
         script: |
+          # 1. تجهيز مجلد www
           mkdir -p www
-          cp -r index.html assets components js pages styles www/ 2>/dev/null || true
-      - name: Setup Android Platform & Icons
-        script: |
+          cp -r index.html assets components js pages styles icon-*.png apple-touch-icon.png www/ 2>/dev/null || true
+
+          # 2. إنشاء منصة android إذا لم تكن موجودة
           if [ ! -d android ]; then
             npx cap add android
           fi
-          
-          # نسخ الصورة كأيقونة رسمية للتطبيق في كل مقاسات Android
+
+          # 3. تحديد ملف الصورة
+          ICON_FILE=""
           if [ -f icon-512.png ]; then
+            ICON_FILE="icon-512.png"
+          elif [ -f apple-touch-icon.png ]; then
+            ICON_FILE="apple-touch-icon.png"
+          fi
+
+          # 4. حذف الـ XML المتعارضة وتثبيت الأيقونة الـ PNG
+          if [ -n "$ICON_FILE" ]; then
+            rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher*.xml 2>/dev/null || true
+
             for dir in android/app/src/main/res/mipmap-*; do
-              cp icon-512.png "$dir/ic_launcher.png"
-              cp icon-512.png "$dir/ic_launcher_round.png"
-              cp icon-512.png "$dir/ic_launcher_foreground.png"
+              cp -f "$ICON_FILE" "$dir/ic_launcher.png"
+              cp -f "$ICON_FILE" "$dir/ic_launcher_round.png"
+              cp -f "$ICON_FILE" "$dir/ic_launcher_foreground.png"
             done
           fi
 
+          # 5. مزامنة Capacitor
           npx cap copy android
           npx cap sync android
       - name: Build APK
